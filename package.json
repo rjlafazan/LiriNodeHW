@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/rjlafazan/LiriNodeHW/issues"
   },
-  "homepage": "https://github.com/rjlafazan/LiriNodeHW#readme"
+  "homepage": "https://github.com/rjlafazan/LiriNodeHW#readme",
+  "dependencies": {
+    "twitter": "^1.7.1"
+  }
 }
