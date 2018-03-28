@@ -11,16 +11,21 @@ var Twitter = require("twitter");
 var client = new Twitter(keys.twitter);
 
 //display  tweets
-if ((process.argv[2] = "my-tweets")) {
+if (process.argv[2] == "my-tweets") {
   function displayTweets() {
     //npm twitter documentation to display tweets
-    var params = { screen_name: "mountainfit24", count: 20 };
+    var params = { screen_name: "mountainfit24", count: 20, include_rts: true };
     client.get("statuses/user_timeline", params, function(
       error,
       tweets,
       response
     ) {
-      if (!error) {
+      if (error) {
+        throw error;
+      } else {
+        // for (var i = 0; i < tweet.length; i++) {
+        //   console.log(tweet[i].created_at + "\n" + tweet[i].text + "\n");
+        // }
         console.log(tweets);
       }
     });
