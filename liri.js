@@ -26,6 +26,7 @@ if (process.argv[2] == "my-tweets") {
       if (error) {
         throw error;
       } else {
+        // loops through the tweets count and displays date created and text only
         for (var i = 0; i < tweets.length; i++) {
           console.log(tweets[i].created_at + " " + tweets[i].text + " ");
         }
@@ -38,7 +39,15 @@ if (process.argv[2] == "my-tweets") {
 
 if (process.argv[2] == "spotify-this-song") {
   //doing stuff to display song information
-  function displaySpotifyData(params) {
+  function displaySpotifyData() {
     var songTitle = process.argv[3];
+    spotify.search({ type: "track", query: songTitle }, function(error, data) {
+      if (error) {
+        return console.log("Error occurred: " + error);
+      } else {
+        console.log(data.tracks.items[0].name);
+      }
+    });
   }
+  displaySpotifyData();
 }
