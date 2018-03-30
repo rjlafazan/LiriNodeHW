@@ -7,6 +7,7 @@ var keys = require("./keys.js");
 // calls necessary apis
 var Twitter = require("twitter");
 var Spotify = require("node-spotify-api");
+var request = require("request");
 
 //key access
 var client = new Twitter(keys.twitter);
@@ -40,14 +41,51 @@ if (process.argv[2] == "my-tweets") {
 if (process.argv[2] == "spotify-this-song") {
   //doing stuff to display song information
   function displaySpotifyData() {
-    var songTitle = process.argv[3];
+    // provides default song title if process.argv[3] is blank or grabs process.argv[3] input
+    var songTitle = process.argv[3] || "The-Sign";
+
+    // var songTitle = process.argv[3];
     spotify.search({ type: "track", query: songTitle }, function(error, data) {
       if (error) {
         return console.log("Error occurred: " + error);
       } else {
-        console.log(data.tracks.items[0].name);
+        // logs various data pulled from the spotify JSON object
+        // console.log(data.tracks.items[0]);
+        console.log("Artist: " + data.tracks.items[0].artists[0].name);
+        console.log("Song Name: " + data.tracks.items[0].name);
+        console.log("Preview Link: " + data.tracks.items[0].preview_url);
+        console.log("Album name: " + data.tracks.items[0].album.name);
       }
     });
   }
   displaySpotifyData();
+}
+
+if (process.argv[2] == "movie-this") {
+  function displayMovieData() {
+    var movieTitle = process.argv[3];
+
+    // var queryURL = "https://www.omdbapi.com/?apikey=trilogy&t=" + movieTitle;
+    request("https://www.omdbapi.com/?apikey=trilogy&t=" + movieTitle, function(
+      error,
+      response,
+      body
+    ) {
+      if (!error && response.statusCode === 200) {
+        var apiResponse = JSON.parse(body);
+        console.log("Title: " + apiResponse.Title);
+        console.log("Year: " + apiResponse.Year);
+        console.log("IMDB Rating: " + apiResponse.Ratings[0].Value);
+        console.log("Rotten Tomatoes Rating: " + apiResponse.Ratings[1].Value);
+        console.log("Country: " + apiResponse.Country);
+        console.log("Language: " + apiResponse.Language);
+        console.log("Plot: " + apiResponse.Plot);
+        console.log("Actors: " + apiResponse.Actors);
+      }
+    });
+  }
+  displayMovieData();
+}
+
+if (process.argv[2] == "do-what-it-says") {
 }
